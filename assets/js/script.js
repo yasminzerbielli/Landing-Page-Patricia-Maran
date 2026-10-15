@@ -2,29 +2,6 @@
   var root = document.documentElement;
   root.classList.add('js');
 
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var intro = document.getElementById('intro');
-  var body = document.body;
-  var INTRO_MS = reduce ? 0 : 2900;
-
-  // Animação de entrada
-  if (intro && !reduce) {
-    body.classList.add('is-intro');
-  }
-  var heroReveals = document.querySelectorAll('.hero .reveal');
-
-  function finishIntro() {
-    if (intro) intro.classList.add('is-leaving');
-    body.classList.remove('is-intro');
-    body.classList.add('is-ready');
-    // Textos do hero entram em sequência
-    heroReveals.forEach(function (el, i) {
-      setTimeout(function () { el.classList.add('is-visible'); }, 250 + i * 140);
-    });
-    if (intro) setTimeout(function () { intro.remove(); }, 1500);
-  }
-  setTimeout(finishIntro, INTRO_MS);
-
   // Menu mobile
   var toggle = document.getElementById('menuToggle');
   var nav = document.getElementById('nav');
@@ -41,10 +18,8 @@
     });
   }
 
-  // Animação de rolagem (exceto o hero, que segue a intro)
-  var items = Array.prototype.filter.call(document.querySelectorAll('.reveal'), function (el) {
-    return !el.closest('.hero');
-  });
+  // Animação de entrada ao rolar
+  var items = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
